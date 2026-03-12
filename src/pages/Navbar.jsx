@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../css/estilo.css'; // crea este fichero si no existe
+import '../css/estilo.css';
 
 function Navbar() {
   const [usuario, setUsuario] = useState(null);
@@ -20,28 +20,24 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="navbar">
-        <div className="contenedor-nav">
-          <div className="nav-logo" id="logo">
-            {/* ajusta la ruta de la imagen a la carpeta public o importa */}
-            <img src="/img/logo.png" alt="logo" />
-            <h1>U Can Save</h1>
+      <nav className="barra-nav">
+        <div className="cont-barra">
+          <div className="logo">
+            <img src="/img/image.png" alt="logo" />
+            <h1>MangasGo</h1>
           </div>
 
-          <ul className="nav-menu">
-            <li className="nav-item">
-              <Link to="/" className="nav-link">Inicio</Link>
+          <ul className="enlaces-nav">
+            <li>
+              <Link to="/">Inicio</Link>
             </li>
-            <li className="nav-item">
-              <Link to="/listar" className="nav-link">Listar</Link>
+            <li>
+              <Link to="/listar">Listar</Link>
             </li>
-            <li className="nav-item">
-              <Link to="/formulario" className="nav-link">Formulario</Link>
+            <li>
+              <Link to="/formulario">Formulario</Link>
             </li>
-            {/* resto de enlaces de ejemplo… */}
           </ul>
-
-
         </div>
       </nav>
     </header>

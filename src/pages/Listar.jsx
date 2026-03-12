@@ -4,21 +4,20 @@ export default function Listar() {
   const [items, setItems] = useState([]);
 
   const handleList = () => {
-    // datos simulados
     const mock = [
-      { id: 1, nombre: 'Elemento 1' },
-      { id: 2, nombre: 'Elemento 2' },
-      { id: 3, nombre: 'Elemento 3' }
+      { id: 1, nombre: 'Manga 1' },
+      { id: 2, nombre: 'Manga 2' },
+      { id: 3, nombre: 'Manga 3' }
     ];
     setItems(mock);
   };
 
   return (
-    <div>
-      <h2>Lista de datos</h2>
-      <button onClick={handleList}>Listar</button>
+    <div className="cont-pag">
+      <h2>Lista de Mangas</h2>
+      <button className="boton" onClick={handleList}>Listar</button>
       {items.length > 0 && (
-        <ul>
+        <ul className="lista">
           {items.map(i => (
             <li key={i.id}>{i.nombre}</li>
           ))}

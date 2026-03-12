@@ -1,7 +1,12 @@
 import { useState } from 'react';
 
 export default function Formulario() {
-  const [form, setForm] = useState({ nombre: '', descripcion: '' });
+  const [form, setForm] = useState({
+    nombre: '',
+    cantidad: '',
+    precio: '',
+    categoria: ''
+  });
   const [enviado, setEnviado] = useState(false);
 
   const handleChange = e => {
@@ -13,14 +18,13 @@ export default function Formulario() {
     e.preventDefault();
     console.log('Formulario enviado', form);
     setEnviado(true);
-    // aquí pondrás el fetch/axios POST cuando conectes la API
   };
 
   return (
-    <div>
-      <h2>Formulario de creación</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="cont-pag">
+      <h2>Subir Manga</h2>
+      <form onSubmit={handleSubmit} className="formulario">
+        <div className="campo">
           <label>
             Nombre:
             <input
@@ -30,19 +34,44 @@ export default function Formulario() {
             />
           </label>
         </div>
-        <div>
+        <div className="campo">
           <label>
-            Descripción:
-            <textarea
-              name="descripcion"
-              value={form.descripcion}
+            Cantidad:
+            <input
+              name="cantidad"
+              type="number"
+              value={form.cantidad}
               onChange={handleChange}
             />
           </label>
         </div>
-        <button type="submit">Enviar</button>
+        <div className="campo">
+          <label>
+            Precio:
+            <input
+              name="precio"
+              type="number"
+              step="0.01"
+              value={form.precio}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <div className="campo">
+          <label>
+            Categoría:
+            <input
+              name="categoria"
+              type="text"
+              value={form.categoria}
+              onChange={handleChange}
+              placeholder="ej: Manga, Manhua, Manhwa"
+            />
+          </label>
+        </div>
+        <button type="submit" className="boton">Enviar</button>
       </form>
-      {enviado && <p>Datos enviados. Mira la consola.</p>}
+      {enviado && <p className="exito">¡Manga agregado exitosamente!</p>}
     </div>
   );
 }
