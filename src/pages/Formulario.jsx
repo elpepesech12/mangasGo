@@ -18,24 +18,22 @@ export default function Formulario() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // Armamos el objeto tal como lo espera Producto.java
       const nuevoManga = {
         nombre: form.nombre,
         categoria: form.categoria,
-        precio: parseInt(form.precio), // Tu Java espera un int
-        stock: parseInt(form.cantidad) // "cantidad" del React viaja como "stock" al backend
+        precio: parseInt(form.precio), 
+        stock: parseInt(form.cantidad) 
       };
 
-      // POST al backend en el puerto 8081
       await axios.post('http://localhost:8081/api/productos', nuevoManga);
       
       console.log('Manga guardado en BD:', nuevoManga);
       setEnviado(true);
       
-      // Limpiamos el formulario
+      // se limpia formulario
       setForm({ nombre: '', cantidad: '', precio: '', categoria: '' });
       
-      // Ocultamos el mensaje después de 3 segundos
+      // para ocultar mensaje dsp de 3 s
       setTimeout(() => setEnviado(false), 3000);
     } catch (error) {
       console.error('Error al guardar en la base de datos:', error);
