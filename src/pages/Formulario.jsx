@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function Formulario() {
   const [form, setForm] = useState({
@@ -14,10 +15,31 @@ export default function Formulario() {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log('Formulario enviado', form);
-    setEnviado(true);
+    try {
+      // Armamos el objeto tal como lo espera Producto.java
+      const nuevoManga = {
+        nombre: form.nombre,
+        categoria: form.categoria,
+        precio: parseInt(form.precio), // Tu Java espera un int
+        stock: parseInt(form.cantidad) // "cantidad" del React viaja como "stock" al backend
+      };
+
+      // POST al backend en el puerto 8081
+      await axios.post('http://localhost:8081/api/productos', nuevoManga);
+      
+      console.log('Manga guardado en BD:', nuevoManga);
+      setEnviado(true);
+      
+      // Limpiamos el formulario
+      setForm({ nombre: '', cantidad: '', precio: '', categoria: '' });
+      
+      // Ocultamos el mensaje después de 3 segundos
+      setTimeout(() => setEnviado(false), 3000);
+    } catch (error) {
+      console.error('Error al guardar en la base de datos:', error);
+    }
   };
 
   return (
@@ -31,17 +53,19 @@ export default function Formulario() {
               name="nombre"
               value={form.nombre}
               onChange={handleChange}
+              required
             />
           </label>
         </div>
         <div className="campo">
           <label>
-            Cantidad:
+            Cantidad (Stock):
             <input
               name="cantidad"
               type="number"
               value={form.cantidad}
               onChange={handleChange}
+              required
             />
           </label>
         </div>
@@ -51,9 +75,9 @@ export default function Formulario() {
             <input
               name="precio"
               type="number"
-              step="0.01"
               value={form.precio}
               onChange={handleChange}
+              required
             />
           </label>
         </div>
@@ -65,7 +89,8 @@ export default function Formulario() {
               type="text"
               value={form.categoria}
               onChange={handleChange}
-              placeholder="ej: Manga, Manhua, Manhwa"
+              placeholder="ej: Shonen, Seinen, Manhwa"
+              required
             />
           </label>
         </div>
