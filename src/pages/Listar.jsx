@@ -4,7 +4,6 @@ import axios from 'axios';
 export default function Listar() {
   const [items, setItems] = useState([]);
 
-  // Petición GET para traer todos los mangas de la BD
   const cargarMangas = async () => {
     try {
       const res = await axios.get('http://localhost:8081/api/productos');
@@ -14,21 +13,18 @@ export default function Listar() {
     }
   };
 
-  // Se ejecuta al entrar a la página
   useEffect(() => {
     cargarMangas();
   }, []);
 
-  // Petición POST a la venta para disparar el evento Kafka
   const handleVenta = async (id) => {
     try {
-      // Se descuenta 1 unidad por cada clic
+      
       await axios.post(`http://localhost:8081/api/venta/${id}/1`);
       
-      // Opcional: una alerta amigable
       alert('¡Venta procesada! Evento enviado a Kafka.');
 
-      // Le damos 1 segundo al ServicioKafka para que reste el stock y recargamos
+
       setTimeout(() => {
         cargarMangas();
       }, 1000);
