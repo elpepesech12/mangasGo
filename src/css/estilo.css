@@ -1,0 +1,62 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: #fff; /* fondo blanco para toda la página */
+}
+
+.navbar {
+  position: fixed;      /* se queda siempre arriba */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 0.5rem 1rem;
+  z-index: 1000;        /* para que esté por encima del resto */
+}
+
+.contenedor-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo img {
+  height: 40px;
+  margin-right: 0.5rem;
+}
+
+.nav-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-item {
+  margin-left: 1rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* separa el main del nav para que no quede tapado */
+main {
+  padding-top: 70px; /* ajusta según la altura de tu navbar */
+}
+
+.usuario-info .saludo {
+  margin-right: 0.5rem;
+}
