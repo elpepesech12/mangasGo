@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useAuth0 } from "@auth0/auth0-react"; // <-- Importar Auth0
 
 export default function Formulario() {
   const [form, setForm] = useState({
     nombre: '',
     cantidad: '',
-    precio: '',
-    categoria: ''
+    precio: ''
   });
   const [enviado, setEnviado] = useState(false);
+  
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -20,25 +22,29 @@ export default function Formulario() {
     try {
       const nuevoManga = {
         nombre: form.nombre,
-        categoria: form.categoria,
         precio: parseInt(form.precio), 
         stock: parseInt(form.cantidad) 
       };
 
-      await axios.post('http://localhost:8081/api/productos', nuevoManga);
+      const token = await getAccessTokenSilently();
+      console.log("Mi token es:", token); //para revisar si el token esta bien
+
+      await axios.post('http://localhost:8081/api/productos', nuevoManga, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       
       console.log('Manga guardado en BD:', nuevoManga);
       setEnviado(true);
       
-      // se limpia formulario
-      setForm({ nombre: '', cantidad: '', precio: '', categoria: '' });
+      setForm({ nombre: '', cantidad: '', precio: '' });
       
-      // para ocultar mensaje dsp de 3 s
       setTimeout(() => setEnviado(false), 3000);
     } catch (error) {
       console.error('Error al guardar en la base de datos:', error);
     }
-  };
+  }; 
 
   return (
     <div className="cont-pag">
@@ -75,19 +81,6 @@ export default function Formulario() {
               type="number"
               value={form.precio}
               onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="campo">
-          <label>
-            Categoría:
-            <input
-              name="categoria"
-              type="text"
-              value={form.categoria}
-              onChange={handleChange}
-              placeholder="ej: Shonen, Seinen, Manhwa"
               required
             />
           </label>

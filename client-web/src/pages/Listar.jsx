@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth0 } from "@auth0/auth0-react"; 
 
 export default function Listar() {
   const [items, setItems] = useState([]);
+  
+  const { getAccessTokenSilently } = useAuth0(); 
 
   const cargarMangas = async () => {
     try {
-      const res = await axios.get('http://localhost:8081/api/productos');
+      // se obtiene el token de forma silenciosa
+      const token = await getAccessTokenSilently();
+      
+      const res = await axios.get('http://localhost:8081/api/productos', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setItems(res.data);
     } catch (error) {
       console.error('Error al obtener los mangas:', error);
@@ -20,10 +30,14 @@ export default function Listar() {
   const handleVenta = async (id) => {
     try {
       
-      await axios.post(`http://localhost:8081/api/venta/${id}/1`);
-      
-      alert('¡Venta procesada! Evento enviado a Kafka.');
+      const token = await getAccessTokenSilently();
 
+      await axios.post(`http://localhost:8081/api/ventas/${id}/1`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      alert('¡Venta procesada! Evento enviado a Kafka.');
 
       setTimeout(() => {
         cargarMangas();
@@ -45,7 +59,7 @@ export default function Listar() {
           {items.map(i => (
             <li key={i.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
               <div>
-                <strong>{i.nombre}</strong> <span style={{ color: '#666', fontSize: '0.9em' }}>({i.categoria})</span>
+                <strong>{i.nombre}</strong>
                 <br />
                 Precio: ${i.precio} | Stock: {i.stock}
               </div>
